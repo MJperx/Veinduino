@@ -4,37 +4,66 @@
 
 #include "Veinduino.h"
 
-Veinduino::Veinduino(uint8_t step, uint8_t dir, uint8_t ms1,
-                     uint8_t ms2, uint8_t ena, uint8_t pump,
-                     uint8_t pdsck, uint8_t dout) {
+Veinduino::Veinduino(uint8_t step, uint8_t dir, uint8_t pump,
+                     uint8_t pdsck, uint8_t dout, uint8_t interruptpin, uint8_t reverse) {
 
     this->_step = step;
     this->_dir = dir;
-    this->_ms1 = ms1;
-    this->_ms2 = ms2;
-    this->_ena = ena;
     this->_pump = pump;
     this->_pdsck = pdsck;
     this->_dout = dout;
+    this->_inter = interruptpin;
+    this->_rev = reverse;
     pinMode(_step, OUTPUT);
     pinMode(_dir,  OUTPUT);
-    pinMode(_ms1,  OUTPUT);
-    pinMode(_ms2,  OUTPUT);
-    pinMode(_ena,  OUTPUT);
     pinMode(_pump, OUTPUT);
     pinMode(_pdsck, OUTPUT);
     pinMode(_dout, INPUT);
-    digitalWrite(_ena, LOW);
-    HX711SetGain(128);
+    pinMode(_inter, INPUT);
+    pinMode(_rev, INPUT_PULLUP);
+    ScaleSetGain(128);
+    ScaleSetScale(408.5f);
+    ScaleTare();
+    Serial.begin(115200);
+}
+
+
+void Veinduino::beginPull() {
+  digitalWrite(_dir, HIGH);
+  for(int x= 1; x < 3000; x++) {
+      digitalWrite(_step,HIGH);
+      delay(1);
+      digitalWrite(_step,LOW);
+      delay(1);
+      Serial.println(ScaleGetUnits(10));
+      ScalePowerDown();
+      delayMicroseconds(10);
+      ScalePowerUp();
+  }
+  resetMotor();
 }
 
 void Veinduino::goMotor(uint16_t step) {
+    digitalWrite(_dir, HIGH);
+    for(int x= 1; x < step; x++) {
+        digitalWrite(_step,HIGH);
+        delay(1);
+        digitalWrite(_step,LOW);
+        delay(1);
+    }
+    resetMotor();
+}
+
+void Veinduino::goMotorBack(uint16_t step) {
     digitalWrite(_dir, LOW);
-    for (int x = 1; x < 1000; x++) {
+    unsigned long currentMillis = millis();
+    for (int x = 1; x < step; x++) {
+      if (currentMillis - previousPumpMillis >= 1) {
         digitalWrite(_step, HIGH);
-        //delay(1);
+        delay(1);
         digitalWrite(_step, LOW);
-        //delay(1);
+        delay(1);
+      }
     }
     resetMotor();
 }
@@ -55,12 +84,9 @@ void Veinduino::goPump(unsigned long time) {
 void Veinduino::resetMotor() {
     digitalWrite(_step, LOW);
     digitalWrite(_dir, LOW);
-    digitalWrite(_ms1, LOW);
-    digitalWrite(_ms2, LOW);
-    digitalWrite(_ena, HIGH);
 }
 
-void Veinduino::HX711SetGain(uint8_t gain) {
+void Veinduino::ScaleSetGain(uint8_t gain) {
     switch (gain) {
         case 128:
             GAIN = 1;
@@ -73,10 +99,10 @@ void Veinduino::HX711SetGain(uint8_t gain) {
             break;
     }
     digitalWrite(_pdsck, LOW);
-    HX711Read();
+    ScaleRead();
 }
 
-long Veinduino::HX711Read() {
+long Veinduino::ScaleRead() {
     unsigned long value = 0;
     uint8_t data[3] = { 0 };
     uint8_t filler = 0x00;
@@ -104,14 +130,52 @@ long Veinduino::HX711Read() {
     return static_cast<long>(value);
 }
 
-long Veinduino::HX711ReadAvarage() {
+long Veinduino::ScaleReadAvarage(byte times) {
     long sum = 0;
     for (uint8_t i = 0; i < times; i++) {
-        sum += HX711Read();
+        sum += ScaleRead();
     }
     return sum / times;
 }
 
 bool Veinduino::ScaleIsReady() {
     return digitalRead(_dout) == LOW;
+}
+
+double Veinduino::ScaleGetValue(byte times) {
+	return ScaleReadAvarage(times) - OFFSET;
+}
+
+float Veinduino::ScaleGetUnits(byte times) {
+	return ScaleGetValue(times) / SCALE;
+}
+
+void Veinduino::ScaleTare(byte times) {
+	double sum = ScaleReadAvarage(times);
+	ScaleSetOffset(sum);
+}
+
+void Veinduino::ScaleSetScale(float scale) {
+	SCALE = scale;
+}
+
+float Veinduino::ScaleGetScale() {
+	return SCALE;
+}
+
+void Veinduino::ScaleSetOffset(long offset) {
+	OFFSET = offset;
+}
+
+long Veinduino::ScaleGetOffset() {
+	return OFFSET;
+}
+
+void Veinduino::ScalePowerDown() {
+	digitalWrite(_pdsck, LOW);
+	digitalWrite(_pdsck, HIGH);
+}
+
+void Veinduino::ScalePowerUp() {
+	digitalWrite(_pdsck, LOW);
 }
