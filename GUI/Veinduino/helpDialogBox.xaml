@@ -1,0 +1,10 @@
+﻿<Window x:Class="Veinduino.helpDialogBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="HelpDialog" Height="377" Width="429" Name="help" WindowStartupLocation="CenterOwner" WindowStyle="None" HorizontalAlignment="Center" VerticalAlignment="Center" ResizeMode="NoResize">
+    <Grid Margin="0,154,0,133">
+        <Button Content="I got it, thanks" Height="23" HorizontalAlignment="Center" Margin="163,0,164,10" Name="closeBtn" VerticalAlignment="Bottom" Width="102" Click="close" Background="White" BorderBrush="{x:Null}" />
+        <ComboBox Height="28" HorizontalAlignment="Right" Margin="0,18,195,0" Name="baudRateBox" VerticalAlignment="Top" Width="134" Initialized="initBaudRate" SelectionChanged="changeBaud" />
+        <Label Content="BaudRate" Height="28" HorizontalAlignment="Left" Margin="12,18,0,0" Name="baudLabel" VerticalAlignment="Top" />
+    </Grid>
+</Window>
