@@ -70,14 +70,12 @@ illustrating how the library can be used with various time sources:
 	  }
 	  if (digitalRead(veinduino->_rev) == LOW){
 	    veinduino->goMotorBack(100);
-	    //Serial.println("da");
 	  }
 	}
 
 	ISR(INT0_vect)                         //Interrupt Service Routine attached to INT0 vector
 	{
 	    digitalWrite(veinduino->_enable,HIGH);  //Disable the motor
-	    //Serial.println("ad");
 	}
 
 
