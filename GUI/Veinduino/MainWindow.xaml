@@ -1,13 +1,17 @@
 ﻿<Window x:Class="Veinduino.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Veinduino" Height="634" Width="800" Name="mainWindow" AllowsTransparency="False" Foreground="White" UseLayoutRounding="False" VisualClearTypeHint="Enabled" VisualTextRenderingMode="ClearType" WindowStyle="None" Background="{x:Null}" WindowStartupLocation="CenterScreen" MinWidth="640" MinHeight="480" Icon="multiresicon.ico" ResizeMode="NoResize" BorderBrush="DimGray">
+        Title="Veinduino" Height="634" Width="800" Name="mainWindow" AllowsTransparency="False" Foreground="White" UseLayoutRounding="False" VisualClearTypeHint="Enabled" VisualTextRenderingMode="ClearType" WindowStyle="SingleBorderWindow" Background="{x:Null}" WindowStartupLocation="CenterScreen" MinWidth="640" MinHeight="480" Icon="multiresicon.ico" ResizeMode="CanMinimize" BorderBrush="DimGray">
     <Grid Name="contentGrid">
-        <Border BorderBrush="DimGray" BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="windowBorder" VerticalAlignment="Stretch" Width="Auto"/>
-        <Button Content="X" Height="20" HorizontalAlignment="Right" Margin="0,5,12,0" Name="windowClose" VerticalAlignment="Top" Width="20" FontWeight="Bold" Background="WhiteSmoke" Click="closeWindow" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="305*"/>
+            <ColumnDefinition Width="92*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="DimGray" BorderThickness="2" Height="Auto" HorizontalAlignment="Stretch" Margin="0" Name="windowBorder" VerticalAlignment="Stretch" Width="Auto" Grid.ColumnSpan="2"/>
+        <!--<Button Content="X" Height="20" HorizontalAlignment="Right" Margin="0,5,12,0" Name="windowClose" VerticalAlignment="Top" Width="20" FontWeight="Bold" Background="WhiteSmoke" Click="" />
         <Button Content="-" Height="20" HorizontalAlignment="Right" Margin="0,5,40,0" Name="windowMin" VerticalAlignment="Top" Width="20" FontWeight="Bold" Background="WhiteSmoke" Click="minWindow" />
-        <Rectangle Margin="0,0,0,0" Height="15" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsManipulationEnabled="True" Fill="#84D4D4D4" Name="dragBar" MouseLeftButtonDown="dragWindow" StrokeThickness="0" Panel.ZIndex="-10" MouseEnter="dragBar_MouseEnter"></Rectangle>
-        <Grid Height="73" VerticalAlignment="Top" Margin="0,20,0,0" IsHitTestVisible="True">
+        <Rectangle Margin="0,0,0,0" Height="15" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsManipulationEnabled="True" Fill="#84D4D4D4" Name="dragBar" MouseLeftButtonDown="dragWindow" StrokeThickness="0" Panel.ZIndex="-10" MouseEnter="dragBar_MouseEnter"></Rectangle>-->
+        <Grid Height="73" VerticalAlignment="Top" Margin="0,20,0,0" IsHitTestVisible="True" Grid.ColumnSpan="2">
             <Button Content="Connect" Height="40" HorizontalAlignment="Right" Margin="0,12,502,0" Name="connectButton" VerticalAlignment="Top" Width="100" Padding="5" BorderThickness="0" BorderBrush="#00000000" FontStyle="Normal" FontWeight="Normal" FontSize="16" Click="arduinoConnect" Foreground="#FF212121">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -27,34 +31,33 @@
             </Button>
             <Button Height="23" HorizontalAlignment="Right" Margin="0,7,750,0" Name="helpBtn" VerticalAlignment="Top" Width="30" BorderBrush="{x:Null}" OpacityMask="{x:Null}" Foreground="#FF383838" Click="moreHelp" Background="{x:Null}" ToolTip="More Help" FontSize="12" FontWeight="Bold" Content="?" />
         </Grid>
-        <Viewbox Name="canvasviewbox" Stretch="Fill" ClipToBounds="True" Margin="10,90,10,80">
+        <Viewbox Name="canvasviewbox" Stretch="Fill" ClipToBounds="True" Margin="10,90,10,80" Grid.ColumnSpan="2">
             <Canvas  Name="bgplot"  Height="391"  Width="600" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FF4E4E4E" MouseMove="specific"   Cursor="Cross" MouseLeave="disableDraw" ClipToBounds="True">
                 <Canvas Name="plot" Height="400"  Width="600" HorizontalAlignment="Center" VerticalAlignment="Center">
                 </Canvas>
             </Canvas>
         </Viewbox>
-        <Canvas Height="20" Width="Auto" Margin="10,0,10,43" VerticalAlignment="Bottom" Background="#FF4E4E4E" Name="zoomBar"  >
+        <Canvas Height="20" Width="Auto" Margin="10,0,10,43" VerticalAlignment="Bottom" Background="#FF4E4E4E" Name="zoomBar" Grid.ColumnSpan="2"  >
             <Rectangle Fill="WhiteSmoke" Width="20" Height="20" VerticalAlignment="Stretch" Canvas.Left="0" Name="inPoint" MouseDown="dragZoom_MouseDown" MouseMove="dragZoom_MouseMove" MouseUp="dragZoom_MouseUp" MouseEnter="dragZoom_MouseEnter" MouseLeave="dragZoom_MouseLeave" />
             <Rectangle Fill="WhiteSmoke" Width="20" Height="20" VerticalAlignment="Stretch" Canvas.Left="738" Name="outPoint" MouseDown="dragZoom_MouseDown" MouseMove="dragZoom_MouseMove" MouseUp="dragZoom_MouseUp" MouseEnter="dragZoom_MouseEnter" MouseLeave="dragZoom_MouseLeave"/>
             <Rectangle Fill="CadetBlue" Width="106" Height="20" VerticalAlignment="Top" HorizontalAlignment="Stretch" Name="zoomBar_Bar" MouseEnter="dragZoom_MouseEnter" MouseLeave="dragZoom_MouseLeave" MouseUp="zoomBar_Bar_MouseUp" MouseDown="dragZoom_MouseDown" Initialized="zoomBar_Bar_Initialized" Canvas.Left="14" Canvas.Right="100" Panel.ZIndex="-1" MouseMove="dragZoom_MouseMove" ClipToBounds="True" />
         </Canvas>
         <StackPanel Height="88" HorizontalAlignment="Left" Margin="12,0,0,10" Name="signalToggles" VerticalAlignment="Bottom" Width="343"></StackPanel>
-        <Grid Name="Viewcontrols" Margin="0,0,10,10" ShowGridLines="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="350" Height="88">
+        <Grid Name="Viewcontrols" Margin="0,0,10,10" ShowGridLines="False" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="350" Height="88" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="210*" />
             </Grid.ColumnDefinitions>
-            <Label Content="X Resolution" Height="28" Name="gridxresLabel" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-430,66,0,-6" />
-            <Label Content="Y Resolution" Height="28" HorizontalAlignment="Left" Margin="-262,67,0,-7" Name="label1" VerticalAlignment="Top" Width="Auto" />
-            <TextBox Background="White" BorderBrush="{x:Null}" HorizontalContentAlignment="Center" Name="gridXres" Padding="1" Text="50" VerticalContentAlignment="Center" Width="50" TextChanged="GridresChanged" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Resolution of vertical gridlines" Margin="-340,66,0,0" />
-            <TextBox Background="White" BorderBrush="{x:Null}" HorizontalContentAlignment="Center" Margin="-172,67,0,-1" Name="gridYres" Padding="1" Text="50" VerticalContentAlignment="Center" TextChanged="GridresChanged" Width="50" HorizontalAlignment="Left" ToolTip="Resolution of horizontal gridlines" />
+            <Label Content="X Resolution" Height="28" Name="gridxresLabel" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-414,66,0,-6" />
+            <Label Content="Y Resolution" Height="28" HorizontalAlignment="Left" Margin="-246,67,0,-7" Name="label1" VerticalAlignment="Top" Width="Auto" />
+            <TextBox Background="White" BorderBrush="{x:Null}" HorizontalContentAlignment="Center" Name="gridXres" Padding="1" Text="50" VerticalContentAlignment="Center" Width="50" TextChanged="GridresChanged" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Resolution of vertical gridlines" Margin="-324,66,0,0" />
+            <TextBox Background="White" BorderBrush="{x:Null}" HorizontalContentAlignment="Center" Margin="-156,67,0,-1" Name="gridYres" Padding="1" Text="50" VerticalContentAlignment="Center" TextChanged="GridresChanged" Width="50" HorizontalAlignment="Left" ToolTip="Resolution of horizontal gridlines" />
             <Button Content="Reset" Height="28" HorizontalAlignment="Right" Name="resetViewBtn" VerticalAlignment="Top" Width="75" Margin="0,64,100,-4" Grid.Column="2" BorderBrush="#00000000" Foreground="#FF212121" Background="{Binding ElementName=connectButton, Path=Background}" Padding="0" Click="resetView" ToolTip="Resets view to starting perspective" />
             <Button Content="Clear graph" Height="28" HorizontalAlignment="Right" Name="cleargraphBtn" VerticalAlignment="Top" Width="75" Margin="0,64,200,-4" BorderBrush="#00000000" Foreground="#FF212121" Background="{Binding ElementName=connectButton, Path=Background}" Padding="0" Click="cleargraphBtn_Click" ToolTip="Clears Graph" Grid.ColumnSpan="3" />
-            <Button Content="Start measure" Height="40" HorizontalAlignment="Right" Name="startBtn" VerticalAlignment="Top" Width="100" Margin="0,-503,30,0" Grid.Row="0" BorderBrush="#00000000" Foreground="#FF212121" Background="{Binding ElementName=connectButton, Path=Background}" Padding="0" Click="arduinoStart" ToolTip="Resets view to starting perspective" FontStyle="Normal" FontWeight="Normal" FontSize="16" Grid.ColumnSpan="2"/>
-            <Button Content="Start pump" Height="40" HorizontalAlignment="Right" Name="pumpBtn" VerticalAlignment="Top" Width="100" Margin="0,-503,123,0" Grid.Row="0" BorderBrush="#00000000" Foreground="#FF212121" Background="{Binding ElementName=connectButton, Path=Background}" Padding="0" Click="pumpStart" ToolTip="Resets view to starting perspective" FontStyle="Normal" FontWeight="Normal" FontSize="16" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <Button Content="Start measure" Height="40" HorizontalAlignment="Right" Name="startBtn" VerticalAlignment="Top" Width="100" Margin="0,-475,117,0" Grid.Row="0" BorderBrush="#00000000" Foreground="#FF212121" Background="{Binding ElementName=connectButton, Path=Background}" Padding="0" Click="arduinoStart" ToolTip="Resets view to starting perspective" FontStyle="Normal" FontWeight="Normal" FontSize="16" Grid.ColumnSpan="2" Grid.Column="1"/>
+            <Button Content="Start pump" Height="40" HorizontalAlignment="Right" Name="pumpBtn" VerticalAlignment="Top" Width="100" Margin="0,-475,0,0" Grid.Row="0" BorderBrush="#00000000" Foreground="#FF212121" Background="{Binding ElementName=connectButton, Path=Background}" Padding="0" Click="pumpStart" ToolTip="Resets view to starting perspective" FontStyle="Normal" FontWeight="Normal" FontSize="16" Grid.Column="2"/>
             <Button Content="Save" Height="28" HorizontalAlignment="Right" Margin="0,66,-1,-6" Name="ExportBtn" OpacityMask="{x:Null}" ToolTip="Export data" VerticalAlignment="Top" Width="75" Grid.Column="2" Background="{Binding ElementName=connectButton, Path=Background}" Foreground="#00000000" Click="exportData" BorderBrush="{x:Null}" IsEnabled="False"></Button>
-            <Button Content="Force stop" Height="40" HorizontalAlignment="Right" x:Name="stopBtn" VerticalAlignment="Top" Width="100" Margin="0,-503,6,0" Grid.Row="0" BorderBrush="#00000000" Foreground="#FF212121" Background="{Binding Background, ElementName=connectButton}" Padding="0" ToolTip="Resets view to starting perspective" FontStyle="Normal" FontWeight="Normal" FontSize="16" Grid.Column="2"/>
         </Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

@@ -81,7 +81,7 @@ namespace Veinduino
         {
             //Change cursor
             Cursor closedhand = new Cursor(new System.IO.MemoryStream(Veinduino.Resources.closedhand));
-            dragBar.Cursor = closedhand;
+            //dragBar.Cursor = closedhand;
             this.DragMove();
 
         }
@@ -427,7 +427,7 @@ namespace Veinduino
         private void dragBar_MouseEnter(object sender, MouseEventArgs e)
         {
             Cursor openhand = new Cursor(new System.IO.MemoryStream(Veinduino.Resources.openhand));
-            dragBar.Cursor = openhand;
+            //dragBar.Cursor = openhand;
         }
 
         private void zoomBar_Bar_MouseUp(object sender, MouseButtonEventArgs e)
