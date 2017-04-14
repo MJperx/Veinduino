@@ -7,6 +7,13 @@ At the top of this website (https://github.com/madar94/Veinduino), choose Clone 
 
 Follow the instructions on https://www.arduino.cc/en/Guide/Libraries to import this library into your Arduino IDE.
 
+## Sample video
+
+In this video you can see how we tested the machine with a real vein.
+
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/PQYYxTTLBEQ/0.jpg)](https://youtu.be/PQYYxTTLBEQ)
+
+
 ## Examples
 
 The VeinduinoTest directory contains the Veinduino library and some example sketches
